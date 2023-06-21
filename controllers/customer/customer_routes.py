@@ -7,7 +7,17 @@ customer_bp =  Blueprint("customer", __name__)
 
 @customer_bp.route("/customers", methods = ['GET'])
 def get_customers():
-    pass
+    customers = Customer.query.all()
+
+    if not customers:
+        return jsonify({'message': 'No customers found'}), 404
+    
+    customer_list = [
+        {'id': customer.id, 'cpf': customer.cpf, 'name': customer.name, 'phone_number': customer.phone_number}
+        for customer in customers
+    ]
+
+    return jsonify({'customers': customer_list}), 200
     
 
 @customer_bp.route("/customers/<int:id_customer>", methods = ['GET'])
