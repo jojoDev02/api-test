@@ -1,4 +1,4 @@
 from flask import Blueprint
 
-pedido_bp = Blueprint("pedido", __name__)
+order_bp = Blueprint("order", __name__)
 

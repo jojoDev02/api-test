@@ -1,37 +1,37 @@
 from flask import Blueprint
 
-cliente_bp =  Blueprint("cliente", __name__)
+customer_bp =  Blueprint("customer", __name__)
 
-@cliente_bp.route("/clientes", methods = ['GET'])
-def get_clientes():
+@customer_bp.route("/customers", methods = ['GET'])
+def get_customers():
     pass
 
-@cliente_bp.route("/clientes/<int:id_cliente>", methods = ['GET'])
-def get_cliente_by_id(id_cliente):
+@customer_bp.route("/customers/<int:id_customer>", methods = ['GET'])
+def get_customer_by_id(id_customer):
     pass
 
-@cliente_bp.route("/clientes", methods = ['POST'])
-def create_cliente():
+@customer_bp.route("/customers", methods = ['POST'])
+def create_customer():
     pass
 
-@cliente_bp.route("/clientes", methods = ['PUT'])
-def update_cliente():
+@customer_bp.route("/customers", methods = ['PUT'])
+def update_customer():
     pass
 
-@cliente_bp.route("/clientes", methods = ['DELETE'])
-def delete_cliente():
+@customer_bp.route("/customers", methods = ['DELETE'])
+def delete_customer():
     pass
 
-@cliente_bp.route("/clientes/<int:id_cliente>/pedidos", methods =['GET'])
-def get_pedidos_cliente(id_cliente):
+@customer_bp.route("/customers/<int:id_customer>/orders", methods =['GET'])
+def get_orders_customer(id_customer):
     pass
 
-@cliente_bp.route("/clientes/<int:id_cliente>/pedidos", methods =['POST'])
-def create_pedidos_cliente(id_cliente):
+@customer_bp.route("/customers/<int:id_customer>/orders", methods =['POST'])
+def create_orders_customer(id_customer):
     pass
 
-@cliente_bp.route("/clientes/<int:id_cliente>/pedidos/<int:id_pedido>", methods =['DELETE'])
-def delete_pedidos_cliente(id_cliente, id_pedido):
+@customer_bp.route("/customers/<int:id_customer>/orders/<int:id_order>", methods =['DELETE'])
+def delete_orders_customer(id_customer, id_order):
     pass
 
 
