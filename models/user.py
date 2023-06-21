@@ -11,14 +11,7 @@ class User(Base):
     user_type = Column(String, nullable=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'user',
-        'polymorphic_on': user_type
-    }   
+        'polymorphic_on': user_type,
+        'polymorphic_identity': 'user'
+    }
 
-
-
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
-
-    
