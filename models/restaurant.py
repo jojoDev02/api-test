@@ -14,6 +14,10 @@ class Restaurant(User):
     opening_time = Column(Time, nullable=False)
     closing_time = Column(Time, nullable=False)
 
+    category_id = Column(Integer, ForeignKey('category.id'))
+    category = relationship('Category', back_populates='restaurants', uselist=False)
+
+    
 
     __mapper_args__ = {
         'polymorphic_identity': 'restaurant'
