@@ -9,7 +9,6 @@ class AddressCustomerRepository:
         db_session.commit()
         return address_customer
 
-    #ta errado, a consulta parte do customer
     def get_address_customer_all(self, customer_id):
         return db_session.query(AddressCustomer).filter(AddressCustomer.customer_id == customer_id)
     

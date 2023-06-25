@@ -13,7 +13,7 @@ class Customer(User):
     name = Column(String(255), nullable=False)
     phone_number = Column(String(11), nullable=False)
 
-    addresses = relationship('AddressCustomer', back_populates='customer')
+    addresses = relationship('AddressCustomer', back_populates='customer', cascade="all, delete-orphan")
     orders = relationship('Order', back_populates='customer')
 
 

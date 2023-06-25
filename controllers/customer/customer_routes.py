@@ -118,7 +118,6 @@ def get_address(customer_id, address_id):
     if not address:
         return jsonify({'error': 'Address not found'}), 404
 
-    # Retorne os detalhes do endereço em formato JSON
     return jsonify({
         'address': {
             'id': address.id,

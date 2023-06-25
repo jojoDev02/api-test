@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from models.user import User
 from models.restaurant_allergenic_ingredient_association import RestaurantAllergenicIngredientAssociation
 from models.category import Category
+from models.address import AddressRestaurant
 
 class Restaurant(User):
 
@@ -19,9 +20,11 @@ class Restaurant(User):
     category_id = Column(Integer, ForeignKey('category.id'))
     category_restaurant = relationship('Category', back_populates='restaurants')
 
-    items = relationship('ItemRestaurant', back_populates='restaurant')
+    items = relationship('ItemRestaurant', back_populates='restaurant', cascade="all, delete-orphan")
 
     allergenic_ingredients = relationship('AllergenicIngredient', secondary='restaurant_allergenic_ingredient_association', back_populates='restaurants')
+
+    address = relationship('AddressRestaurant', back_populates='restaurant', uselist=False, cascade="all, delete-orphan")
 
     __mapper_args__ = {
         'polymorphic_identity': 'restaurant'

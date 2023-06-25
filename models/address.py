@@ -33,3 +33,14 @@ class AddressCustomer(Address):
     __mapper_args__ = {
         'polymorphic_identity': 'address_customer',
     }
+
+class AddressRestaurant(Address):
+    __tablename__ = 'address_restaurant'
+
+    id = Column(Integer, ForeignKey('address.id'), primary_key=True)
+    restaurant_id= Column(Integer,ForeignKey('restaurant.id'))
+    restaurant = relationship('Restaurant', back_populates='address')
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'address_restaurant',
+    }
