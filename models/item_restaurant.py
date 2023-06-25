@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Float, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from db.database import Base
+from models.restaurant import Restaurant
+from models.restriction import Restriction
 from models.item_restriction_association import ItemRestrictionAssociation
 
 class ItemRestaurant(Base):
@@ -12,16 +14,13 @@ class ItemRestaurant(Base):
     description = Column(String(255), nullable=False)
     url_image = Column(String, nullable=True)
     
-    restaurant = Column(Integer, ForeignKey('restaurant.cnpj'))
-    item_orders = relationship("ItemOrder", backref='item_restaurant')
-    restrictions = relationship("Restriction", secondary= ItemRestrictionAssociation , backref='items')
+    restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
+    restaurant = relationship('Restaurant', back_populates='items', uselist= False)
+
+    restrictions = relationship("Restriction", secondary= 'item_restriction_association', back_populates='items_restaurant')
+
+    item_orders = relationship("ItemOrder", back_populates='item_restaurant')
+
+    #relate to favorite
+
     
-
-    def __init__(self, price, name, description, url_image):
-        self.price = price
-        self.name = name
-        self.description = description
-        self.url_image = url_image
-
-    #relacionar com restaurant
-    #relacionar com restriction 

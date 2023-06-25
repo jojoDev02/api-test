@@ -15,22 +15,21 @@ class Address(Base):
     neighborhood = Column(String(100), nullable=False)
     number = Column(Integer, nullable=False)
     complement= Column(String(100), nullable=True)
+    type = Column(String(20))
 
-    
+    __mapper_args__ = {
+        'polymorphic_on': type,
+        'polymorphic_identity': 'address'
+    }
 
-    def __init__(self, nickname, cep, street, state, city, neighborhood, number, complement):
-        self.nickname = nickname
-        self.cep = cep
-        self.street = street
-        self.state = state
-        self.city = city
-        self.neighborhood = neighborhood
-        self.number = number
-        self.complement = complement
+ 
+class AddressCustomer(Address):
+    __tablename__ = 'address_customer'
 
-    
+    id = Column(Integer, ForeignKey('address.id'), primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customer.id'))
+    customer = relationship('Customer', back_populates='addresses')
 
-    
-    #relacionar com costumer and restaurant
-
-
+    __mapper_args__ = {
+        'polymorphic_identity': 'address_customer',
+    }

@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Enum, String, Integer, Float, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from db.database import Base
+from models.item_order import ItemOrder
 
 from enums.payment_method import PaymentMethod
 from enums.status_order import StatusOrder
-from .item_order import ItemOrder
 
 class Order(Base):
     __tablename__ = 'order'
@@ -15,14 +15,10 @@ class Order(Base):
     statusOrder = Column(Enum(StatusOrder), nullable=False)
     payment_method = Column(Enum(PaymentMethod), nullable=False)
 
-    items_order= relationship('ItemOrder', backref='order')
-    customer= Column(String, ForeignKey('customer.cpf'))
+    customer_id= Column(String, ForeignKey('customer.cpf'))
+    customer = relationship('Customer', back_populates='orders')
+    item_orders= relationship('ItemOrder', back_populates='order')
 
-    def __init__(self, value, date, statusOrder, payment_method):
-        self.value = value
-        self.date = date
-        self.statusOrder = statusOrder
-        self.payment_method = payment_method
 
-    # relacionar com item_pedido 
+
     # relacionar com cliente 

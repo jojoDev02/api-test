@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from db.database import Base
-from models.item_restriction_association import ItemRestrictionAssociation
 
 
 class Restriction(Base):
@@ -11,9 +10,7 @@ class Restriction(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False, unique=True)
 
-    items = relationship("ItemRestaurant", secondary=ItemRestrictionAssociation, backref='restrictions')
+    items_restaurant = relationship("ItemRestaurant", secondary='item_restriction_association', back_populates='restrictions')
 
     def __init__(self, name):
         self.name = name
-
-#relacionar com itens

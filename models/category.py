@@ -8,10 +8,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
 
-    restaurants = relationship('Restaurant', back_populates='category')
+    restaurants = relationship('Restaurant', back_populates='category_restaurant', uselist=True)
 
 
-    def __init__(self, name):
-        self.name = name
-        
     

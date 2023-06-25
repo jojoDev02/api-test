@@ -1,6 +1,8 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from models.user import User
+from models.address import AddressCustomer
+from models.order import Order
 
 class Customer(User):
 
@@ -11,6 +13,9 @@ class Customer(User):
     name = Column(String(255), nullable=False)
     phone_number = Column(String(11), nullable=False)
 
+    addresses = relationship('AddressCustomer', back_populates='customer')
+    orders = relationship('Order', back_populates='customer')
+
 
     __mapper_args__ = {
         'polymorphic_identity': 'customer'
@@ -18,4 +23,4 @@ class Customer(User):
 
             
 #relacionar com Adress
-#relacionar com Order
+

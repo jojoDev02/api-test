@@ -1,5 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from db.database import Base
+from models.allergenic_ingredient import AllergenicIngredient
 
 
 class RestaurantAllergenicIngredientAssociation(Base):

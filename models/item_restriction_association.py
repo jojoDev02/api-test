@@ -5,6 +5,6 @@ class ItemRestrictionAssociation(Base):
 
     __tablename__ = 'item_restriction_association'
 
-    item_id = Column(Integer, ForeignKey('item_restaurante.id'), primary_key=True)
+    item_restaurant_id = Column(Integer, ForeignKey('item_restaurant.id'), primary_key=True)
     restriction_id = Column(Integer, ForeignKey('restriction.id'), primary_key=True)
 
