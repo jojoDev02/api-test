@@ -21,9 +21,11 @@ def login():
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
     token = request.headers.get('Authorization')
-
-    if token:
-        result = AuthManager.logout(token)
-        return jsonify(result), 200
-    else:
+    
+    if not token:
         return jsonify({'error': 'Authentication token not provided'}), 401
+
+    result = AuthManager.logout(token)
+    return jsonify(result)
+
+        
