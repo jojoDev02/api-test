@@ -6,26 +6,26 @@ class CustomerRepository:
     def get_customer_all(self):
         return db_session.query(Customer).all()
     
-    def get_customer_by_id(self, customer_id):
-        return db_session.query(Customer).get(customer_id)
+    def get_customer_by_id(self, cliente_id):
+        return db_session.query(Customer).get(cliente_id)
 
-    def create_customer(self,email, password, cpf, name, phone_number):
-        customer = Customer(email=email, password=password, user_type="customer", cpf=cpf, name=name, phone_number=phone_number)
-        db_session.add(customer)
+    def create_customer(self,email, senha, cpf, nome, telefone):
+        cliente = Customer(email=email, senha=senha, tipo="customer", cpf=cpf, nome=nome, telefone=telefone)
+        db_session.add(cliente)
         db_session.commit()
-        return customer
+        return cliente
 
-    def update_customer(self, customer, email, name, phone_number):
-        if customer:
-            customer.email = email
-            customer.name = name
-            customer.phone_number = phone_number
+    def update_customer(self, cliente, email, nome, telefone):
+        if cliente:
+            cliente.email = email
+            cliente.nome = nome
+            cliente.telefone = telefone
             db_session.commit()
-            return customer
+            return cliente
 
-    def delete_customer(self, customer_id):
-        customer = self.get_customer_by_id(customer_id)
-        if customer:
-            db_session.delete(customer)
+    def delete_customer(self, cliente_id):
+        cliente = self.get_customer_by_id(cliente_id)
+        if cliente:
+            db_session.delete(cliente)
             db_session.commit()
 

@@ -4,16 +4,16 @@ from models.address import AddressRestaurant
 class AddressRestaurantRepository:
     #revisar o fluxo de criacao do restaurant
     def create_address(self, **kwargs):
-        address_restaurant = AddressRestaurant(**kwargs)
-        db_session.add(address_restaurant)
+        endereco_restaurante = AddressRestaurant(**kwargs)
+        db_session.add(endereco_restaurante)
         db_session.commit()
-        return address_restaurant
+        return endereco_restaurante
 
-    def get_address_by_id(self, address_id):
-        return db_session.query(AddressRestaurant).get(address_id)
+    def get_address_by_id(self, endereco_id):
+        return db_session.query(AddressRestaurant).get(endereco_id)
 
-    def update_address(self, address_restaurant, **kwargs):
+    def update_address(self, endereco_restaurante, **kwargs):
         for key, value in kwargs.items():
-            setattr(address_restaurant, key, value)
+            setattr(endereco_restaurante, key, value)
         db_session.commit()
-        return address_restaurant
+        return endereco_restaurante

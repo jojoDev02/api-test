@@ -6,40 +6,40 @@ class RestaurantRepository:
     def get_restarant_all(self):
         return db_session.query(Restaurant).all()
     
-    def get_restaurant_by_id(self, restaurant_id):
-        return db_session.query(Restaurant).get(restaurant_id)
+    def get_restaurant_by_id(self, restaurante_id):
+        return db_session.query(Restaurant).get(restaurante_id)
     
     def get_restaurant_by_name(self, name):
         return db_session.query(Restaurant).filter_by(name = name).first()
 
     def create_restaurant(self, **kwargs):
-        opening_time = time.fromisoformat(kwargs.get('opening_time'))
-        closing_time = time.fromisoformat(kwargs.get('closing_time'))
+        horario_abertura = time.fromisoformat(kwargs.get('horario_abertura'))
+        horario_fechamento = time.fromisoformat(kwargs.get('horario_fechamento'))
     
-        restaurant = Restaurant(**kwargs)
-        restaurant.opening_time = opening_time
-        restaurant.closing_time = closing_time
+        restaurante = Restaurant(**kwargs)
+        restaurante.horario_abertura = horario_abertura
+        restaurante.horario_fechamento = horario_fechamento
    
-        db_session.add(restaurant)
+        db_session.add(restaurante)
         db_session.commit()
-        return restaurant
+        return restaurante
 
-    def update_restaurant(self, restaurant, **kwargs):
-        if restaurant:
+    def update_restaurant(self, restaurante, **kwargs):
+        if restaurante:
             for key, value in kwargs.items():
-                setattr(restaurant, key, value)
+                setattr(restaurante, key, value)
 
-            restaurant.opening_time = time.fromisoformat(kwargs.get('opening_time'))
-            restaurant.closing_time = time.fromisoformat(kwargs.get('closing_time'))
+            restaurante.horario_abertura = time.fromisoformat(kwargs.get('horario_abertura'))
+            restaurante.horario_fechamento = time.fromisoformat(kwargs.get('horario_fechamento'))
             db_session.commit()
 
 
         
-        return restaurant
+        return restaurante
 
-    def delete_restaurant(self, restaurant):
-        if restaurant:
-            db_session.delete(restaurant)
+    def delete_restaurant(self, restaurante):
+        if restaurante:
+            db_session.delete(restaurante)
             db_session.commit()
 
 
