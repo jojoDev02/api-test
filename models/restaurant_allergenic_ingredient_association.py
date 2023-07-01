@@ -7,5 +7,5 @@ class RestaurantAllergenicIngredientAssociation(Base):
 
     __tablename__ = 'restaurant_allergenic_ingredient_association'
 
-    restaurant_id = Column('restaurant_id', String, ForeignKey('restaurant.cnpj'), primary_key=True)
-    allergenic_ingredient_id = Column('allergenic_ingredient_id', Integer, ForeignKey('allergenic_ingredient.id'), primary_key=True)
+    restaurante_id = Column(String, ForeignKey('restaurant.cnpj'), primary_key=True)
+    ingrediente_alergenico_id = Column(Integer, ForeignKey('allergenic_ingredient.id'), primary_key=True)

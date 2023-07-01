@@ -6,8 +6,8 @@ class AllergenicIngredient(Base):
     __tablename__ = 'allergenic_ingredient'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
+    nome = Column(String, nullable=False)
 
-    restaurants = relationship('Restaurant', secondary='restaurant_allergenic_ingredient_association', back_populates="allergenic_ingredients")
+    restaurantes = relationship('Restaurant', secondary='restaurant_allergenic_ingredient_association', back_populates="ingredientes_alergenicos")
 
     

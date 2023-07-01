@@ -7,13 +7,20 @@ class ItemOrder(Base):
     __tablename__ = 'item_order'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    quantity = Column(Integer, nullable= False)
-    value = Column(Float, nullable=False)
+    quantidade = Column(Integer, nullable= False)
+    valor = Column(Float, nullable=False) #quantity * item_restaurant.price
 
-    item_restaurant_id = Column(Integer, ForeignKey('item_restaurant.id'))
-    item_restaurant = relationship('ItemRestaurant', back_populates='item_orders')
+    item_restaurante_id = Column(Integer, ForeignKey('item_restaurant.id'))
+    item_restaurante = relationship('ItemRestaurant', back_populates='itens_pedidos')
 
-    order_id = Column(Integer, ForeignKey('order.order_id'))
-    order = relationship('Order', back_populates='item_orders')
+    pedido_id = Column(Integer, ForeignKey('order.id'))
+    pedido = relationship('Order', back_populates='itens_pedidos')
 
 
+    def to_dict(self):
+        return {
+            'quantidade': self.quantidade,
+            'valor': self.valor,
+            'item_restaurante_id': self.item_restaurante_id,
+            'pedido_id': self.pedido_id
+        }

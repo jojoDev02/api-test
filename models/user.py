@@ -7,11 +7,11 @@ class User(Base):
 
     id = Column(Integer, primary_key= True, autoincrement= True)
     email = Column(String, unique= True, nullable= False)
-    password = Column(String,nullable= False)
-    user_type = Column(String, nullable=False)
+    senha = Column(String,nullable= False)
+    tipo = Column(String, nullable=False)
 
     __mapper_args__ = {
-        'polymorphic_on': user_type,
+        'polymorphic_on': tipo,
         'polymorphic_identity': 'user'
     }
 

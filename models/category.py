@@ -6,9 +6,9 @@ class Category(Base):
     __tablename__ = 'category'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
+    nome = Column(String, nullable=False)
 
-    restaurants = relationship('Restaurant', back_populates='category_restaurant', uselist=True)
+    restaurantes = relationship('Restaurant', back_populates='categoria_restaurante', uselist=True)
 
 
     

@@ -9,16 +9,26 @@ from enums.status_order import StatusOrder
 class Order(Base):
     __tablename__ = 'order'
 
-    order_id = Column(Integer, primary_key=True, autoincrement=True)
-    value = Column(Float, nullable=False)
-    date = Column(Date, nullable=False)
-    statusOrder = Column(Enum(StatusOrder), nullable=False)
-    payment_method = Column(Enum(PaymentMethod), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    valor = Column(Float, nullable=False)
+    data = Column(Date, nullable=False)
+    statusPedido = Column(Enum(StatusOrder), nullable=False)
+    metodo_pagamento = Column(Enum(PaymentMethod), nullable=False)
 
-    customer_id= Column(String, ForeignKey('customer.cpf'))
-    customer = relationship('Customer', back_populates='orders')
-    item_orders= relationship('ItemOrder', back_populates='order')
+    cliente_id= Column(String, ForeignKey('customer.cpf'))
+    cliente = relationship('Customer', back_populates='pedidos')
+    itens_pedido= relationship('ItemOrder', back_populates='pedido')
 
+    restaurante_id = Column(Integer, ForeignKey('restaurant.id'))
+    restaurante = relationship('Restaurant', back_populates='pedidos', uselist=False)
 
-
-    # relacionar com cliente 
+    def to_dict(self):
+        return {
+        'pedido_id': self.id,
+        'valor': self.valor,
+        'data': self.data.isoformat(),
+        'statusPedido': self.statusPedido.value,
+        'metodo_pagamento': self.metodo_pagamento.value,
+        'cliente_id': self.cliente_id,
+        'restaurante_id': self.restaurante_id,
+        }

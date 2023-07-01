@@ -9,17 +9,17 @@ class ItemRestaurant(Base):
     __tablename__ = 'item_restaurant'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    price = Column(Float, nullable=False)
-    name = Column(String, nullable=False)
-    description = Column(String(255), nullable=False)
-    url_image = Column(String, nullable=True)
+    preco = Column(Float, nullable=False)
+    nome = Column(String, nullable=False)
+    descricao = Column(String(255), nullable=False)
+    url_imagem = Column(String, nullable=True)
     
-    restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
-    restaurant = relationship('Restaurant', back_populates='items', uselist= False)
+    restaurante_id = Column(Integer, ForeignKey('restaurant.id'))
+    restaurante = relationship('Restaurant', back_populates='itens', uselist= False)
 
-    restrictions = relationship("Restriction", secondary= 'item_restriction_association', back_populates='items_restaurant')
+    restricoes = relationship("Restriction", secondary= 'item_restriction_association', back_populates='itens_restaurante')
 
-    item_orders = relationship("ItemOrder", back_populates='item_restaurant')
+    itens_pedido = relationship("ItemOrder", back_populates='item_restaurante')
 
     #relate to favorite
 

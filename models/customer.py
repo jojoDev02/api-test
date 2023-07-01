@@ -10,11 +10,11 @@ class Customer(User):
 
     id = Column(Integer, ForeignKey('user.id'), primary_key=True)
     cpf = Column(String(11), nullable=False, unique=True)
-    name = Column(String(255), nullable=False)
-    phone_number = Column(String(11), nullable=False)
+    nome = Column(String(255), nullable=False)
+    telefone = Column(String(11), nullable=False)
 
-    addresses = relationship('AddressCustomer', back_populates='customer', cascade="all, delete-orphan")
-    orders = relationship('Order', back_populates='customer')
+    enderecos = relationship('AddressCustomer', back_populates='cliente', cascade="all, delete-orphan")
+    pedidos = relationship('Order', back_populates='cliente')
 
 
     __mapper_args__ = {

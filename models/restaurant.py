@@ -11,26 +11,27 @@ class Restaurant(User):
 
     id = Column(Integer, ForeignKey('user.id'), primary_key=True)
     cnpj = Column(String(14), unique=True, nullable=False)
-    fantasy_name = Column(String(100), nullable= False)
-    corporate_name = Column(String(100), nullable= False) 
-    delivery_fee = Column(Float, nullable=False)
-    opening_time = Column(Time, nullable=False)
-    closing_time = Column(Time, nullable=False)
+    nome_fantasia = Column(String(100), nullable= False)
+    razao_social = Column(String(100), nullable= False) 
+    taxa_entrega = Column(Float, nullable=False)
+    horario_abertura = Column(Time, nullable=False)
+    horario_fechamento = Column(Time, nullable=False)
 
-    category_id = Column(Integer, ForeignKey('category.id'))
-    category_restaurant = relationship('Category', back_populates='restaurants')
+    categoria_id = Column(Integer, ForeignKey('category.id'))
+    categoria_restaurante = relationship('Category', back_populates='restaurantes')
 
-    items = relationship('ItemRestaurant', back_populates='restaurant', cascade="all, delete-orphan")
+    itens = relationship('ItemRestaurant', back_populates='restaurante', cascade="all, delete-orphan")
 
-    allergenic_ingredients = relationship('AllergenicIngredient', secondary='restaurant_allergenic_ingredient_association', back_populates='restaurants')
+    ingredientes_alergenicos = relationship('AllergenicIngredient', secondary='restaurant_allergenic_ingredient_association', back_populates='restaurantes')
 
-    address = relationship('AddressRestaurant', back_populates='restaurant', uselist=False, cascade="all, delete-orphan")
+    endereco = relationship('AddressRestaurant', back_populates='restaurante', uselist=False, cascade="all, delete-orphan")
 
+    pedidos = relationship('Order', back_populates='restaurante')
     __mapper_args__ = {
         'polymorphic_identity': 'restaurant'
     }
 
-#relate to Address
+
 
 
 

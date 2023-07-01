@@ -8,9 +8,7 @@ class Restriction(Base):
     __tablename__ = 'restriction'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False, unique=True)
+    nome = Column(String(100), nullable=False, unique=True)
 
-    items_restaurant = relationship("ItemRestaurant", secondary='item_restriction_association', back_populates='restrictions')
+    itens_restaurante = relationship("ItemRestaurant", secondary='item_restriction_association', back_populates='restricoes')
 
-    def __init__(self, name):
-        self.name = name
