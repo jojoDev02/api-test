@@ -9,9 +9,9 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 @auth_bp.route('/login', methods=['POST'])
 def login():
     email = request.json.get('email')
-    password = request.json.get('password')
+    senha = request.json.get('senha')
 
-    auth_result = AuthManager.authenticate(email, password)
+    auth_result = AuthManager.authenticate(email, senha)
 
     if auth_result:
         return jsonify(auth_result), 200
