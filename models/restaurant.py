@@ -41,7 +41,7 @@ class Restaurant(User):
             'taxa_entrega': self.taxa_entrega,
             'horario_abertura': str(self.horario_abertura),
             'horario_fechamento': str(self.horario_fechamento),
-            'categoria_restaurante': self.categoria_restaurante.to_dict(),
+            #'categoria_restaurante': self.categoria_restaurante.to_dict(),
             'itens': [item.to_dict() for item in self.itens],
             'ingredientes_alergenicos': [ingrediente.to_dict() for ingrediente in self.ingredientes_alergenicos],
             'endereco': self.endereco.to_dict(),

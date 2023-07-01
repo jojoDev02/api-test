@@ -1,160 +1,97 @@
 from flask import Blueprint, jsonify, request
-from db.database import db_session
 
 from repositories.restaurant_repository import RestaurantRepository
 from repositories.address_restaurant_repository import AddressRestaurantRepository
 
 
-restaurant_bp = Blueprint("restaurant", __name__)
+restaurant_bp = Blueprint("restaurante", __name__)
 
 restaurant_repository = RestaurantRepository()
 address_repository = AddressRestaurantRepository()
 
 
-@restaurant_bp.route("/restaurants", methods = ['GET'])
+@restaurant_bp.route("/restaurantes", methods = ['GET'])
 def get_restaurants():
-    restaurants = restaurant_repository.get_restarant_all()
+    restaurantes = restaurant_repository.get_restarant_all()
 
-    if not restaurants:
-        return jsonify({'message': 'No restaurants found'}), 404
+    if not restaurantes:
+        return jsonify({'message': 'No restaurantes found'}), 404
     
-    restaurants_list = [
-        {'id': restaurant.id,
-                'cnpj': restaurant.cnpj,
-                'fantasy_name': restaurant.fantasy_name,
-                'corporate_name': restaurant.corporate_name,
-                'delivery_fee': restaurant.delivery_fee,
-                'opening_time': str(restaurant.opening_time),
-                'closing_time': str(restaurant.closing_time)}
-        for restaurant in restaurants
-    ]
+    restaurants_list = [restaurante.to_dict() for restaurante in restaurantes]
 
-    return jsonify({'restaurants': restaurants_list})
+    return jsonify({'restaurantes': restaurants_list})
 
 
-@restaurant_bp.route("/restaurants/<int:restaurant_id>", methods = ['GET'])
-def get_restaurant_by_id(restaurant_id):
-    restaurant = restaurant_repository.get_restaurant_by_id(restaurant_id)
+@restaurant_bp.route("/restaurantes/<int:restaurante_id>", methods = ['GET'])
+def get_restaurant_by_id(restaurante_id):
+    restaurante = restaurant_repository.get_restaurant_by_id(restaurante_id)
 
-    if not restaurant:
+    if not restaurante:
         return jsonify({'error': 'Restaurant not found'}), 404
     
-    return jsonify({'id': restaurant.id,
-                    'email': restaurant.email,
-                    'cnpj': restaurant.cnpj,
-                    'fantasy_name': restaurant.fantasy_name,
-                    'corporate_name': restaurant.corporate_name,
-                    'delivery_fee': restaurant.delivery_fee,
-                    'opening_time': str(restaurant.opening_time),
-                    'closing_time': str(restaurant.closing_time),
-                        'address': {
-                            'id': restaurant.address.id,
-                            'cep': restaurant.address.cep,
-                            'street': restaurant.address.street,
-                            'state': restaurant.address.state,
-                            'city': restaurant.address.city,
-                            'neighborhood': restaurant.address.neighborhood,
-                            'number': restaurant.address.number,
-                            'complement': restaurant.address.complement
-                        }
-                    })
+    return jsonify(restaurante.to_dict())
 
-@restaurant_bp.route("/restaurants", methods = ['POST'])
+@restaurant_bp.route("/restaurantes", methods = ['POST'])
 def create_restaurant():
     data = request.get_json()
 
-    address_data = data.pop('address', None)
+    address_data = data.pop('endereco', None)
     if not address_data:
         return jsonify({'error': 'Address data is required'}), 400
 
     
-    restaurant = restaurant_repository.create_restaurant(**data)
+    restaurante = restaurant_repository.create_restaurant(**data)
 
-    address_data['restaurant_id'] = restaurant.id
-    address = address_repository.create_address(**address_data)
-    restaurant.address = address
+    address_data['restaurante_id'] = restaurante.id
+    endereco = address_repository.create_address(**address_data)
+    restaurante.endereco = endereco
 
-    return jsonify({
-        'id': restaurant.id,
-        'email': restaurant.email,
-        'cnpj': restaurant.cnpj,
-        'fantasy_name': restaurant.fantasy_name,
-        'corporate_name': restaurant.corporate_name,
-        'delivery_fee': restaurant.delivery_fee,
-        'opening_time': str(restaurant.opening_time),
-        'closing_time': str(restaurant.closing_time),
-        'address': {
-            'id': restaurant.address.id,
-            'cep': restaurant.address.cep,
-            'street': restaurant.address.street,
-            'state': restaurant.address.state,
-            'city': restaurant.address.city,
-            'neighborhood': restaurant.address.neighborhood,
-            'number': restaurant.address.number,
-            'complement': restaurant.address.complement
-        }
-})
+    return jsonify(restaurante.to_dict())
 
 
-@restaurant_bp.route("/restaurants/<int:restaurant_id>", methods = ['PUT'])
-def update_restaurant(restaurant_id):
-    restaurant = restaurant_repository.get_restaurant_by_id(restaurant_id)
+@restaurant_bp.route("/restaurantes/<int:restaurante_id>", methods = ['PUT'])
+def update_restaurant(restaurante_id):
+    restaurante = restaurant_repository.get_restaurant_by_id(restaurante_id)
 
-    if not restaurant:
+    if not restaurante:
         return jsonify({'error': 'Restaurant not found'}), 404
     
-    data=request.json
+    data=request.get_json()
 
-    restaurant = restaurant_repository.update_restaurant(restaurant, **data)
+    restaurante = restaurant_repository.update_restaurant(restaurante, **data)
 
-    return jsonify({'id': restaurant.id,
-                    'email': restaurant.email,
-                    'cnpj': restaurant.cnpj,
-                    'fantasy_name': restaurant.fantasy_name,
-                    'corporate_name': restaurant.corporate_name,
-                    'delivery_fee': restaurant.delivery_fee,
-                    'opening_time': str(restaurant.opening_time),
-                    'closing_time': str(restaurant.closing_time)})
+    return jsonify(restaurante.to_dict())
 
-@restaurant_bp.route("/restaurants/<int:restaurant_id>/addresses", methods = ['PUT'])
-def update_restaurant_address(restaurant_id):
-    restaurant = restaurant_repository.get_restaurant_by_id(restaurant_id)
+@restaurant_bp.route("/restaurantes/<int:restaurante_id>/enderecos", methods = ['PUT'])
+def update_restaurant_address(restaurante_id):
+    restaurante = restaurant_repository.get_restaurant_by_id(restaurante_id)
 
-    if not restaurant:
+    if not restaurante:
         return jsonify({'error': 'Restaurant not found'}), 404
 
-    data = request.json
+    data = request.get_json()
 
-    address = address_repository.get_address_by_id(restaurant.address.id)
+    endereco = address_repository.get_address_by_id(restaurante.endereco.id)
 
-    if address:
-        address_repository.update_address(address, **data)
+    if endereco:
+        address_repository.update_address(endereco, **data)
 
-    return jsonify({
-        'address': {
-            'id': restaurant.address.id,
-            'restaurant_id': restaurant.address.restaurant_id,
-            'nickname': restaurant.address.nickname,
-            'cep': restaurant.address.cep,
-            'street': restaurant.address.street,
-            'state': restaurant.address.state,
-            'city': restaurant.address.city,
-            'neighborhood': restaurant.address.neighborhood,
-            'number': restaurant.address.number,
-            'complement': restaurant.address.complement
-        }
-    })
+    return jsonify(endereco.to_dict())
 
+@restaurant_bp.route("/restaurantes/<int:restaurante_id>", methods= ['DELETE'])
+def delete_restaurant(restaurante_id):
+    restaurante = restaurant_repository.get_restaurant_by_id(restaurante_id)
 
-@restaurant_bp.route("/restaurants/<int:restaurant_id>", methods= ['DELETE'])
-def delete_restaurant(restaurant_id):
-    restaurant = restaurant_repository.get_restaurant_by_id(restaurant_id)
-
-    if not restaurant:
+    if not restaurante:
         return jsonify({'error': 'Restaurant not found'}), 404
     
-    restaurant_repository.delete_restaurant(restaurant)
+    restaurant_repository.delete_restaurant(restaurante)
     
     return jsonify({'message': 'Restaurant deleted successfully'}), 200
 
 
+# @restaurant_bp.route('/int:restaurante_id/orders', methods=['GET'])
+# def get_orders_by_restaurant(restaurante_id):
+#     #orders = db_session.query(Order).filter_by(restaurante_id=restaurante_id).all()
+#     #orders_data = [] 
+#     pass
