@@ -162,19 +162,3 @@ def delete_address(cliente_id, endereco_id):
     return jsonify({'message': 'Address deleted successfully'})
 
     
-
-
-
-@customer_bp.route("/clientes/<int:cliente_id>/pedidos", methods =['GET'])
-def get_orders_customer(cliente_id):
-    pass
-
-@customer_bp.route("/clientes/<int:cliente_id>/pedidos", methods =['POST'])
-def create_orders_customer(cliente_id):
-    pass
-
-@customer_bp.route("/clientes/<int:cliente_id>/pedidos/<int:pedido_id>", methods =['DELETE'])
-def delete_orders_customer(cliente_id, pedido_id):
-    pass
-
-

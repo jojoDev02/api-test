@@ -5,4 +5,5 @@ class StatusOrder(Enum):
     CONFIRMED = (2, 'Confirmed')
     IN_PREPARATION = (3, 'In Preparation')
     DELIVERED = (4, 'Delivered')
-    CANCELLED = (5, 'Cancelled')
+    ON_THE_WAY = (5, 'On the Way')
+    CANCELLED = (6, 'Cancelled')

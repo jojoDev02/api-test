@@ -15,7 +15,7 @@ class Order(Base):
     statusPedido = Column(Enum(StatusOrder), nullable=False)
     metodo_pagamento = Column(Enum(PaymentMethod), nullable=False)
 
-    cliente_id= Column(String, ForeignKey('customer.cpf'))
+    cliente_id= Column(String, ForeignKey('customer.id'))
     cliente = relationship('Customer', back_populates='pedidos')
     itens_pedidos= relationship('ItemOrder', back_populates='pedido')
 
@@ -31,4 +31,5 @@ class Order(Base):
         'metodo_pagamento': self.metodo_pagamento.value,
         'cliente_id': self.cliente_id,
         'restaurante_id': self.restaurante_id,
+        'itens': [item.to_dict() for item in self.itens_pedidos]
         }

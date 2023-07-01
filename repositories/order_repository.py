@@ -7,46 +7,72 @@ from db.database import db_session
 
 class OrderRepository:
 
-    def get_order_by_id(self, order_id):
-        return db_session.query(Order).get(order_id)
+    def get_order_by_id(self, pedido_id):
+        return db_session.query(Order).get(pedido_id)
 
-    def get_orders_by_customer_id(self, customer_id):
-        return db_session.query(Order).filter_by(customer_id=customer_id).all()
+    def get_orders_by_customer_id(self, cliente_id):
+        return db_session.query(Order).filter(Order.cliente_id == cliente_id).all()  
     
-    def get_orders_by_restaurant_id(self, restaurant_id):
-        return db_session.query(Order).join(Order.item_orders).join(ItemOrder.item_restaurant).filter(ItemRestaurant.restaurant_id == restaurant_id).all()
+    def get_orders_by_restaurant_id(self, restaurante_id):
+        return db_session.query(Order).filter(Order.restaurante_id == restaurante_id).all()
 
-    def create_order(self,restaurant, customer, **kwargs):
+    def create_order(self, **kwargs):
 
-        items = kwargs.pop('items', [])
-        #resolver questao com o tipo data
-        order = Order(value=kwargs['value'],
-                  date=datetime.date.today(), 
-                  statusOrder=StatusOrder.AWAINTING_CONFIRMATION,  
-                  payment_method=kwargs['payment_method'], 
-                  restaurant_id=restaurant.id,
-                  customer_id=customer.id)
+        itens = kwargs['itens']
         
-        # order = Order(**kwargs)
-        # order.restaurant_id = restaurant.id
-        # order.customer_id = customer.id
-        db_session.add(order)
+        restaurante = kwargs['restaurante']
+        cliente = kwargs['cliente']
+
+        valor = kwargs['valor']
+        metodo_pagamento=kwargs['metodo_pagamento']
+        data=datetime.date.today()
+        statusPedido=StatusOrder.AWAINTING_CONFIRMATION
+
+        pedido = Order(valor=valor, data=data, statusPedido=statusPedido, metodo_pagamento=metodo_pagamento, restaurante_id=restaurante.id, cliente_id=cliente.id)
+        
+        db_session.add(pedido)
         db_session.commit()
 
-
-        for item in items:
-            item_order = ItemOrder(quantity=item['quantity'], value=item['value'], item_restaurant_id=item['item_restaurant_id'], order_id=order.order_id)
-            order.item_orders.append(item_order)
+        for item in itens:
+            item_order = ItemOrder(quantidade=item['quantidade'], valor=item['valor'], item_restaurante_id=item['item_restaurante_id'], pedido_id=pedido.id)
+            pedido.itens_pedidos.append(item_order)
         
-        restaurant.orders.append(order)
+        restaurante.pedidos.append(pedido)
+        cliente.pedidos.append(pedido)
         db_session.commit()
 
-        return order
+        return pedido
         
-    def update_status_order(self, order_id, status_order):
-        order = self.get_order_by_id(order_id)
-        if order:
-            order.statusOrder = status_order
+    def update_status_order(self, pedido_id):
+        pedido = self.get_order_by_id(pedido_id)
+        if pedido:
+            status_mapping = {
+                1: StatusOrder.AWAINTING_CONFIRMATION,
+                2: StatusOrder.CONFIRMED,
+                3: StatusOrder.IN_PREPARATION,
+                4: StatusOrder.DELIVERED,
+                5: StatusOrder.ON_THE_WAY,
+                6: StatusOrder.CANCELLED
+            }
+        if pedido.statusPedido.value in (5, 6):
+            raise ValueError('Invalid operation for current order status.')
+
+        current_status = pedido.statusPedido
+        next_status_value = current_status.value[0] + 1
+
+        if next_status_value not in status_mapping:
+            raise ValueError('Invalid next order status.')
+
+        next_status = status_mapping[next_status_value]
+        pedido.statusPedido = next_status
+        db_session.commit()
+
+        return pedido
+    
+    def cancel_order(self, pedido):
+
+        if pedido.statusPedido.value[0] in (1, 2):
+            pedido.statusPedido=StatusOrder.CANCELLED
             db_session.commit()
-        return order
-
+            return pedido
+        raise ValueError('Não é possivel cancelar o pedido')
