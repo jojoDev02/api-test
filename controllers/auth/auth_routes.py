@@ -28,4 +28,15 @@ def logout():
     result = AuthManager.logout(token)
     return jsonify(result)
 
-        
+#verificar fluxo 
+@auth_bp.route('/reset-senha', methods=['PUT'])
+def update_password():
+    dados= request.get_json()
+    nova_senha = dados['nova_senha']
+    email = dados['email']
+
+    user = UserRepository.update_password(email,nova_senha)
+    if user:
+        return jsonify({'message':'senha atualizada com sucesso.',
+                        'user': user.email,
+                         'senha': user.senha })
