@@ -17,7 +17,7 @@ class Order(Base):
 
     cliente_id= Column(String, ForeignKey('customer.cpf'))
     cliente = relationship('Customer', back_populates='pedidos')
-    itens_pedido= relationship('ItemOrder', back_populates='pedido')
+    itens_pedidos= relationship('ItemOrder', back_populates='pedido')
 
     restaurante_id = Column(Integer, ForeignKey('restaurant.id'))
     restaurante = relationship('Restaurant', back_populates='pedidos', uselist=False)

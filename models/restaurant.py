@@ -31,6 +31,22 @@ class Restaurant(User):
         'polymorphic_identity': 'restaurant'
     }
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'cnpj': self.cnpj,
+            'email': self.email,
+            'nome_fantasia': self.nome_fantasia,
+            'razao_social': self.razao_social,
+            'taxa_entrega': self.taxa_entrega,
+            'horario_abertura': str(self.horario_abertura),
+            'horario_fechamento': str(self.horario_fechamento),
+            'categoria_restaurante': self.categoria_restaurante.to_dict(),
+            'itens': [item.to_dict() for item in self.itens],
+            'ingredientes_alergenicos': [ingrediente.to_dict() for ingrediente in self.ingredientes_alergenicos],
+            'endereco': self.endereco.to_dict(),
+            'pedidos': [pedido.to_dict() for pedido in self.pedidos]
+        }
 
 
 

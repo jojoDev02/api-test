@@ -19,8 +19,17 @@ class ItemRestaurant(Base):
 
     restricoes = relationship("Restriction", secondary= 'item_restriction_association', back_populates='itens_restaurante')
 
-    itens_pedido = relationship("ItemOrder", back_populates='item_restaurante')
+    itens_pedidos = relationship("ItemOrder", back_populates='item_restaurante')
 
     #relate to favorite
 
-    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'preco': self.preco,
+            'nome': self.nome,
+            'descricao': self.descricao,
+            'url_imagem': self.url_imagem,
+            'restaurante': self.restaurante.to_dict(),
+            'restricoes': [restricao.to_dict() for restricao in self.restricoes]
+        }

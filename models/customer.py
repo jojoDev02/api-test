@@ -21,6 +21,16 @@ class Customer(User):
         'polymorphic_identity': 'customer'
     }
 
-            
-#relacionar com Adress
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'cpf': self.cpf,
+            'nome': self.nome,
+            'email':self.email,
+            'telefone': self.telefone,
+            'enderecos': [endereco.to_dict() for endereco in self.enderecos],
+            'pedidos': [pedido.to_dict() for pedido in self.pedidos]
+        }
+                
+
 

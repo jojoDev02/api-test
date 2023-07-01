@@ -12,3 +12,8 @@ class Restriction(Base):
 
     itens_restaurante = relationship("ItemRestaurant", secondary='item_restriction_association', back_populates='restricoes')
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'nome': self.nome
+        }

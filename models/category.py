@@ -11,4 +11,11 @@ class Category(Base):
     restaurantes = relationship('Restaurant', back_populates='categoria_restaurante', uselist=True)
 
 
-    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'nome': self.nome
+        }
+
+    def __repr__(self):
+        return f"Category(id={self.id}, nome='{self.nome}')"
