@@ -4,6 +4,7 @@ from models.user import User
 from models.restaurant_allergenic_ingredient_association import RestaurantAllergenicIngredientAssociation
 from models.category import Category
 from models.address import AddressRestaurant
+from models.cupom import Cupom
 
 class Restaurant(User):
 
