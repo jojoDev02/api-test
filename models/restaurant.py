@@ -27,6 +27,8 @@ class Restaurant(User):
     endereco = relationship('AddressRestaurant', back_populates='restaurante', uselist=False, cascade="all, delete-orphan")
 
     pedidos = relationship('Order', back_populates='restaurante')
+
+    cupons = relationship('Cupom', back_populates='restaurante', cascade="all, delete-orphan")
     __mapper_args__ = {
         'polymorphic_identity': 'restaurant'
     }
@@ -45,7 +47,8 @@ class Restaurant(User):
             'itens': [item.to_dict() for item in self.itens],
             'ingredientes_alergenicos': [ingrediente.to_dict() for ingrediente in self.ingredientes_alergenicos],
             'endereco': self.endereco.to_dict(),
-            'pedidos': [pedido.to_dict() for pedido in self.pedidos]
+            'pedidos': [pedido.to_dict() for pedido in self.pedidos],
+            'cupons' : [cupom.to_dict() for cupom in self.cupons]
         }
 
 
