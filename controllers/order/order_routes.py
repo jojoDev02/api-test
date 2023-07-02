@@ -53,38 +53,24 @@ def create_order(restaurante_id, cliente_id):
 
     return jsonify(pedido.to_dict())
 
-@order_bp.route('/restaurantes/<int:restaurante_id>/clientes/<int:cliente_id>/pedidos/<int:pedido_id>', methods=['PUT'])
-def update_order_status(restaurante_id, cliente_id,pedido_id):
+@order_bp.route('/pedidos/<int:pedido_id>/atualizar-status', methods=['PUT'])
+def update_order_status(pedido_id):
     pedido = order_repo.get_order_by_id(pedido_id)
+
+    if not pedido:
+        return jsonify({'error': 'Pedido not found.'}), 404
     
-    restaurante = restaurant_repo.get_restaurant_by_id(restaurante_id)
-    cliente = customer_repo.get_customer_by_id(cliente_id)
-    pedido = order_repo.get_order_by_id(pedido_id)
-    
-    if not restaurante:
-        return jsonify({'error': 'Restaurant not found.'}), 404
-    if not cliente:
-        return jsonify({'error': 'Customer not found.'}), 404
-    
-    pedido = order_repo.update_status_order(pedido_id)
+    pedido = order_repo.update_status_order(pedido)
     
     if pedido:
         return jsonify({'message': 'Order status updated successfully.'}), 200
     else:
-        return jsonify({'error': 'Invalid order status.'}), 400
+        return jsonify({'message':'Operação inválida para o status atual do pedido.'}),400
     
-@order_bp.route('/restaurantes/<int:restaurante_id>/clientes/<int:cliente_id>/pedidos/<int:pedido_id>', methods=['DELETE'])
-def cancel_order(restaurante_id, cliente_id, pedido_id):
+@order_bp.route('/pedidos/<int:pedido_id>/cancelar', methods=['PUT'])
+def cancel_order(pedido_id):
     pedido = order_repo.get_order_by_id(pedido_id)
     
-    restaurante = restaurant_repo.get_restaurant_by_id(restaurante_id)
-    cliente = customer_repo.get_customer_by_id(cliente_id)
-    pedido = order_repo.get_order_by_id(pedido_id)
-    
-    if not restaurante:
-        return jsonify({'error': 'Restaurant not found.'}), 404
-    if not cliente:
-        return jsonify({'error': 'Customer not found.'}), 404
     if not pedido:
         return jsonify({'error': 'Pedido not found.'}), 404
     
@@ -92,4 +78,4 @@ def cancel_order(restaurante_id, cliente_id, pedido_id):
     
     if pedido:
         return jsonify({'message': 'Pedido cancelado.'}), 200
- 
+    return jsonify({'message':'O pedido não pode ser cancelado.'}),400

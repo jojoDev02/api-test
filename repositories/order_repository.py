@@ -1,4 +1,6 @@
 import datetime
+
+from flask import jsonify
 from enums.status_order import StatusOrder
 from models.order import Order
 from models.item_order import ItemOrder
@@ -43,8 +45,8 @@ class OrderRepository:
 
         return pedido
         
-    def update_status_order(self, pedido_id):
-        pedido = self.get_order_by_id(pedido_id)
+    def update_status_order(self, pedido):
+
         if pedido:
             status_mapping = {
                 1: StatusOrder.AWAINTING_CONFIRMATION,
@@ -54,14 +56,16 @@ class OrderRepository:
                 5: StatusOrder.ON_THE_WAY,
                 6: StatusOrder.CANCELLED
             }
-        if pedido.statusPedido.value in (5, 6):
-            raise ValueError('Invalid operation for current order status.')
+        if pedido.statusPedido.value[0] in (5, 6):
+            return None
+            
 
         current_status = pedido.statusPedido
         next_status_value = current_status.value[0] + 1
 
         if next_status_value not in status_mapping:
-            raise ValueError('Invalid next order status.')
+            return jsonify({'message':'Status do próximo pedido inválido.'}),400
+        
 
         next_status = status_mapping[next_status_value]
         pedido.statusPedido = next_status
@@ -75,4 +79,5 @@ class OrderRepository:
             pedido.statusPedido=StatusOrder.CANCELLED
             db_session.commit()
             return pedido
-        raise ValueError('Não é possivel cancelar o pedido')
+        return None
+        
