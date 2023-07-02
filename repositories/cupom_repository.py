@@ -11,6 +11,9 @@ class CupomRepository:
 
     def get_cupom_by_id(self, cupom_id):
         return db_session.query(Cupom).get(cupom_id)
+    
+    def get_cupons(self, restaurante_id):
+        return db_session.query(Cupom).filter(Cupom.restaurante_id == restaurante_id).all()
         
     def update_cupom(self, cupom, **dados):
         if cupom:
