@@ -1,9 +1,9 @@
 from enum import Enum
 
 class StatusOrder(Enum):
-    AWAINTING_CONFIRMATION = (1, 'Awaiting Confirmation')
-    CONFIRMED = (2, 'Confirmed')
-    IN_PREPARATION = (3, 'In Preparation')
-    DELIVERED = (4, 'Delivered')
-    ON_THE_WAY = (5, 'On the Way')
-    CANCELLED = (6, 'Cancelled')
+    AWAINTING_CONFIRMATION = (1, 'Aguardando Confirmação')
+    CONFIRMED = (2, 'Confirmado')
+    IN_PREPARATION = (3, 'Em Preparo')
+    DELIVERED = (4, 'Entregue')
+    ON_THE_WAY = (5, 'A Caminho')
+    CANCELLED = (6, 'Cancelado')

@@ -1,8 +1,8 @@
-from enum import Enum, auto
+from enum import Enum
 
 class PaymentMethod(Enum):
    PIX = 'Pix'
    CASH = 'Cash'
-   DEBIT_CARD = 'Debit Card'
-   CREDIT_CARD = 'Credit Card'
+   DEBIT_CARD = 'Cartão de Débito'
+   CREDIT_CARD = 'Cartão de Crédito'
 
