@@ -30,6 +30,6 @@ class ItemRestaurant(Base):
             'nome': self.nome,
             'descricao': self.descricao,
             'url_imagem': self.url_imagem,
-            'restaurante': self.restaurante.to_dict(),
+            # 'restaurante': self.restaurante.to_dict(),
             'restricoes': [restricao.to_dict() for restricao in self.restricoes]
         }

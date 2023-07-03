@@ -1,5 +1,8 @@
 from models.item_restaurant import ItemRestaurant
 from db.database import db_session
+from sqlalchemy.sql.expression import or_
+
+
 
 class ItemRestaurantRepository:
     def get_items_restarant_all(self, restaurante_id):
@@ -27,3 +30,28 @@ class ItemRestaurantRepository:
         db_session.delete(item_resaturante)
         db_session.commit()
    
+   #retorna todos os itens que tenham a palavra buscada
+    def search_itens(self, nome_item):
+        return db_session.query(ItemRestaurant).filter(ItemRestaurant.nome.ilike(f"%{nome_item}%")).all()
+    
+    def search_itens_personalizada(self, termo_buscado, sort, order, filtros=None):
+        
+        query = db_session.query(ItemRestaurant).filter(ItemRestaurant.nome.ilike(f"%{termo_buscado}%"))
+
+        if filtros:
+            restricoes = [ItemRestaurant.restricoes.any(restricao) for restricao in filtros]
+            query = query.filter(or_(*restricoes))
+
+        if sort == 'alfa':
+            if order== 'asc':
+                return query.order_by(ItemRestaurant.nome.asc()).all()
+            elif order == 'desc':
+                return query.order_by(ItemRestaurant.nome.desc()).all()
+        if sort == 'preco':
+            if order== 'asc':
+                return query.order_by(ItemRestaurant.preco.asc()).all()
+            elif order == 'desc':
+                return query.order_by(ItemRestaurant.preco.desc()).all()
+            
+        return query
+            
