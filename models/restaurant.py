@@ -18,6 +18,8 @@ class Restaurant(User):
     horario_abertura = Column(Time, nullable=False)
     horario_fechamento = Column(Time, nullable=False)
 
+    nota_media = Column(Float, nullable=True)
+
     categoria_id = Column(Integer, ForeignKey('category.id'))
     categoria_restaurante = relationship('Category', back_populates='restaurantes')
 
@@ -44,6 +46,7 @@ class Restaurant(User):
             'taxa_entrega': self.taxa_entrega,
             'horario_abertura': str(self.horario_abertura),
             'horario_fechamento': str(self.horario_fechamento),
+            'nota': self.nota_media,
             #'categoria_restaurante': self.categoria_restaurante.to_dict(),
             'itens': [item.to_dict() for item in self.itens],
             'ingredientes_alergenicos': [ingrediente.to_dict() for ingrediente in self.ingredientes_alergenicos],

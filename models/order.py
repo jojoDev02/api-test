@@ -2,6 +2,7 @@ from sqlalchemy import Column, Enum, String, Integer, Float, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from db.database import Base
 from models.item_order import ItemOrder
+from models.avaliacao import Avaliacao
 
 from enums.payment_method import PaymentMethod
 from enums.status_order import StatusOrder
@@ -21,6 +22,8 @@ class Order(Base):
 
     restaurante_id = Column(Integer, ForeignKey('restaurant.id'))
     restaurante = relationship('Restaurant', back_populates='pedidos', uselist=False)
+
+    avaliacao = relationship('Avaliacao', back_populates='pedido', uselist=False , cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

@@ -1,3 +1,6 @@
+from sqlalchemy import func
+from models.avaliacao import Avaliacao
+from models.order import Order
 from models.restaurant import Restaurant
 from db.database import db_session
 from datetime import datetime, time
@@ -57,3 +60,10 @@ class RestaurantRepository:
             #         query = query.order_by(Restaurant.avaliacao.asc())
             #     elif sort == 'desc':
             #         query = query.order_by(Restaurant.avaliacao.desc())
+
+    def atualizar_nota_media(self, restaurante_id):
+        nota_media = db_session.query(func.avg(Avaliacao.nota)).join(Order).filter(Order.restaurante_id == restaurante_id).scalar()
+
+        restaurante = db_session.query(Restaurant).get(restaurante_id)
+        restaurante.nota_media = nota_media
+        db_session.commit()
