@@ -4,6 +4,7 @@ from db.database import Base
 from models.restaurant import Restaurant
 from models.restriction import Restriction
 from models.item_restriction_association import ItemRestrictionAssociation
+from models.favorite import Favorite
 
 class ItemRestaurant(Base):
     __tablename__ = 'item_restaurant'
@@ -21,7 +22,7 @@ class ItemRestaurant(Base):
 
     itens_pedidos = relationship("ItemOrder", back_populates='item_restaurante')
 
-    #relate to favorite
+    clientes_favoritos = relationship('Customer', secondary='favorite', back_populates='favoritos')
 
     def to_dict(self):
         return {

@@ -16,6 +16,7 @@ class Customer(User):
     enderecos = relationship('AddressCustomer', back_populates='cliente', cascade="all, delete-orphan")
     pedidos = relationship('Order', back_populates='cliente')
 
+    favoritos = relationship('ItemRestaurant', secondary='favorite', back_populates='clientes_favoritos')
 
     __mapper_args__ = {
         'polymorphic_identity': 'customer'
@@ -29,7 +30,8 @@ class Customer(User):
             'email':self.email,
             'telefone': self.telefone,
             'enderecos': [endereco.to_dict() for endereco in self.enderecos],
-            'pedidos': [pedido.to_dict() for pedido in self.pedidos]
+            'pedidos': [pedido.to_dict() for pedido in self.pedidos],
+            'favoritos': [favorito.to_dict() for favorito in self.favoritos]
         }
                 
 

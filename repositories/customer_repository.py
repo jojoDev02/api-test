@@ -28,4 +28,3 @@ class CustomerRepository:
         if cliente:
             db_session.delete(cliente)
             db_session.commit()
-
