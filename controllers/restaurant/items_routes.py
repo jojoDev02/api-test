@@ -10,6 +10,7 @@ item_repository = ItemRestaurantRepository()
 @items_bp.route('/<int:restaurante_id>/itens', methods=['GET'])
 def get_items(restaurante_id):
     itens = item_repository.get_items_restarant_all(restaurante_id)
+    
     if not itens:
         return jsonify({'error': 'Items not found'}), 404
 
