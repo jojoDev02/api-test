@@ -12,13 +12,11 @@ def consulta_cep(cep):
     if response.status_code == 200:
         data = response.json()
         if 'erro' not in data:
-            cep = data['cep']
             rua = data['logradouro']
             bairro = data['bairro']
             cidade = data['localidade']
             uf = data['uf']
             return jsonify({
-                'cep': cep,
                 'rua': rua,
                 'bairro': bairro,
                 'cidade': cidade,
